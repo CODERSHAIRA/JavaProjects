@@ -1,46 +1,66 @@
-window.onload = function() {
-    var airFiller = document.querySelector(".air-filler");
-    var gameContainer = document.getElementById("game-container");
-    var isFilling = false;
-
-    airFiller.addEventListener("click", function() {
-        if (!isFilling) {
-            isFilling = true;
-            fillBalloons();
-        }
-    });
-
-    gameContainer.addEventListener("click", function(event) {
-        var target = event.target;
-        if (target.classList.contains("filled")) {
-            target.classList.remove("filled");
-            target.style.animation = "none";
-            setTimeout(function() {
-                target.parentNode.removeChild(target);
-            }, 500);
-        }
-    });
-
-    function fillBalloons() {
-        var balloon = document.createElement("div");
-        balloon.className = "balloon";
-        balloon.style.backgroundColor = getRandomColor();
-        gameContainer.appendChild(balloon);
-        balloon.classList.add("filled");
-        balloon.style.animation = "fly-animation 5s infinite linear";
-
-        var nextBalloonTimeout = Math.floor(Math.random() * 3000) + 1000;
-        setTimeout(function() {
-            fillBalloons();
-        }, nextBalloonTimeout);
+document.addEventListener("DOMContentLoaded", function() {
+    const balloonCount = 10;
+    const balloonsContainer = document.getElementById("balloons-container");
+    let score = 0;
+    const scoreElement = document.getElementById("score");
+    const popSound = document.getElementById("pop-sound");
+  
+    const balloonImages = [
+      "images/Symbol 100006.png",
+      "images/Symbol 100007.png",
+      "images/Symbol 100008.png",
+      "images/Symbol 100009.png",
+      "images/Symbol 1000010.png",
+    ];
+  
+    function createBalloon() {
+      const balloon = document.createElement("div");
+      balloon.classList.add("balloon");
+      const randomIndex = Math.floor(Math.random() * balloonImages.length);
+      const balloonImage = balloonImages[randomIndex];
+      balloon.style.backgroundImage = `url('${balloonImage}')`;
+      balloon.addEventListener("click", function() {
+        burstBalloon(balloon);
+      });
+      return balloon;
     }
-
-    function getRandomColor() {
-        var letters = "0123456789ABCDEF";
-        var color = "#";
-        for (var i = 0; i < 6; i++) {
-            color += letters[Math.floor(Math.random() * 16)];
-        }
-        return color;
+  
+    function getRandomPosition() {
+      const minX = 50;
+      const maxX = window.innerWidth - 200;
+      const minY = 50;
+      const maxY = window.innerHeight - 200;
+      const randomX = Math.floor(Math.random() * (maxX - minX + 1) + minX);
+      const randomY = Math.floor(Math.random() * (maxY - minY + 1) + minY);
+      return { x: randomX, y: randomY };
     }
-};
+  
+    function addBalloon() {
+      const balloon = createBalloon();
+      const position = getRandomPosition();
+      balloon.style.top = position.y + "px";
+      balloon.style.left = position.x + "px";
+      balloonsContainer.appendChild(balloon);
+    }
+  
+    function burstBalloon(balloon) {
+      balloon.classList.add("burst");
+      balloon.removeEventListener("click", burstBalloon);
+      popSound.play();
+      score++;
+      scoreElement.textContent = "Score: " + score;
+      setTimeout(() => {
+        balloonsContainer.removeChild(balloon);
+      }, 500);
+    }
+  
+    function produceBalloon() {
+      if (balloonsContainer.children.length < balloonCount) {
+        addBalloon();
+      }
+    }
+  
+    setInterval(produceBalloon, 1000);
+  });
+  
+  

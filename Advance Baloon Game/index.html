@@ -1,26 +1,29 @@
-<!DOCTYPE html>
 <html>
 <head>
-    <title>Balloon Game</title>
-    <link rel="stylesheet" type="text/css" href="style.css">
+  <title>Balloon Burst Game</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div id="game-container">
-        <div class="air-filler">
-            <div class="pump"></div>
-            <div class="face">
-                <div class="eyes">
-                    <div class="eye"></div>
-                    <div class="eye"></div>
-                </div>
-                <div class="mouth"></div>
-                <div class="nose"></div>
-            </div>
-            <div class="hand-left"></div>
-            <div class="hand-right"></div>
-        </div>
-    </div>
+  <div id="game-container">
+    <div class="clouds"></div>
 
-    <script src="script.js"></script>
+    <div class="air-filler">
+        <div class="balloon-pump"></div>
+    </div>
+    <div id="balloons-container"></div>
+    <div id="score">Score: 0</div>
+    <audio id="pop-sound" src="balloon-pop-48030.mp3"></audio>
+    
+  </div>
+  <script src="script.js"></script>
 </body>
 </html>
+
+
+  
+   
+  
+    
+    
+    
+  
