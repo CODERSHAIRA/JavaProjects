@@ -1,0 +1,25 @@
+package com.kashish.project.authentication.management.config;
+
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+
+@Configuration
+@EnableWebSecurity
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+	@Override
+    protected void configure(HttpSecurity http) throws Exception {
+		http
+        .csrf().disable()
+        .authorizeRequests()
+            .antMatchers("/h2-console/**", "/registration").permitAll() // Allow H2 Console access
+            .anyRequest().authenticated()
+            .and()
+        .headers().frameOptions().disable() // Disable X-Frame-Options for H2 Console
+        .and()
+        .formLogin();
+	}
+
+}

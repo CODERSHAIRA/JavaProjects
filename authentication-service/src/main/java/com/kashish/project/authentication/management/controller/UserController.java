@@ -16,13 +16,13 @@ public class UserController {
 	
     private final UserServiceImpl userService;
 
-    @PostMapping(value = "/register")
+    @PostMapping(value = "/registration")
     public ResponseEntity<String> registerUser(@RequestBody User user) {
     	
     	System.out.println(user);
         userService.registerUser(user);
         
-            return ResponseEntity.badRequest().body("User registration successfull!");
+            return ResponseEntity.ok().body("User registration successfull!");
         
     }
     
