@@ -5,12 +5,12 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class User {
-	
+public class UserInfo {
+
 	private String username;
 
-    private String password;
+	private String password;
 
-    private String email;
+	private String email;
 
 }

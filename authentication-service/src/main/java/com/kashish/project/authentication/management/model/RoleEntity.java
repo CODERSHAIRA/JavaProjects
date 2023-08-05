@@ -1,6 +1,5 @@
 package com.kashish.project.authentication.management.model;
 
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -14,12 +13,12 @@ import lombok.Data;
 @Entity
 @Table(name = "roles")
 public class RoleEntity {
-	
-	@Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Integer id;
 
-    @Column(nullable = false, unique = true)
-    private String name;
+	@Id
+	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+	private Integer id;
+
+	@Column(nullable = false, unique = true)
+	private String name;
 
 }

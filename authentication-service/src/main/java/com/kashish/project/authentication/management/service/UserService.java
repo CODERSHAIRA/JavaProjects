@@ -1,9 +1,9 @@
 package com.kashish.project.authentication.management.service;
 
-import com.kashish.project.authentication.management.model.User;
+import com.kashish.project.authentication.management.model.UserInfo;
 
 public interface UserService {
-	
-	public void registerUser(User user);
+
+	public void registerUser(UserInfo user);
 
 }
