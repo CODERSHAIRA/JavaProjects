@@ -1,6 +1,12 @@
 package com.kashish.project.authentication.management.service.impl;
 
-import org.springframework.security.crypto.password.PasswordEncoder;
+import java.util.ArrayList;
+import java.util.Arrays;
+
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.kashish.project.authentication.management.model.RoleEntity;
@@ -14,13 +20,11 @@ import lombok.AllArgsConstructor;
 
 @Service
 @AllArgsConstructor
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl implements UserService, UserDetailsService {
 
 	private final UserRepository userRepository;
 
 	private final RoleRepository roleRepository;
-
-	private final PasswordEncoder passwordEncoder;
 
 	@Override
 	public void registerUser(UserInfo user) {
@@ -35,15 +39,37 @@ public class UserServiceImpl implements UserService {
 
 		UserEntity userEntity = new UserEntity();
 		userEntity.setUsername(user.getUsername());
-		userEntity.setPassword(passwordEncoder.encode(user.getPassword()));
+		userEntity.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
 		userEntity.setEmail(user.getEmail());
 
+		RoleEntity role = roleRepository.findByName("ROLE_ADMIN");
+        if(role == null){
+        	RoleEntity roleEntity = new RoleEntity();
+    		roleEntity.setName("ROLE_ADMIN");
+    		role = roleRepository.save(roleEntity);
+        }
+        
+		
+		
+		userEntity.setRoles(Arrays.asList(role));
 		userRepository.save(userEntity);
 
-		RoleEntity roleEntity = new RoleEntity();
-		roleEntity.setName("USER");
-		roleRepository.save(roleEntity);
-
 	}
+
+	@Override
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		UserEntity user = userRepository.findByUsername(username);
+        if (user == null) {
+            throw new UsernameNotFoundException("User not found");
+        }
+
+        return new org.springframework.security.core.userdetails.User(
+            user.getUsername(),
+            user.getPassword(),
+            new ArrayList<>()
+        );
+	}
+	
+	
 
 }

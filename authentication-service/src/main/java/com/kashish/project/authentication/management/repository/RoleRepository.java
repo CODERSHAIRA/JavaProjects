@@ -6,4 +6,6 @@ import com.kashish.project.authentication.management.model.RoleEntity;
 
 public interface RoleRepository extends JpaRepository<RoleEntity, Integer> {
 
+	RoleEntity findByName(String name);
+
 }
